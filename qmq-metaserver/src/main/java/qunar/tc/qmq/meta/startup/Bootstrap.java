@@ -31,6 +31,9 @@ import qunar.tc.qmq.meta.web.SubjectConsumerServlet;
  */
 public class Bootstrap {
     public static void main(String[] args) throws Exception {
+
+        System.setProperty("qmq.conf","qmq-dist/conf");
+
         final ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         context.setResourceBase(System.getProperty("java.io.tmpdir"));

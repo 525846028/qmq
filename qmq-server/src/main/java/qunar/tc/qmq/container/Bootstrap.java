@@ -21,6 +21,7 @@ import qunar.tc.qmq.startup.ServerWrapper;
 
 public class Bootstrap {
     public static void main(String[] args) {
+        System.setProperty("qmq.conf","qmq-dist/conf");
         ServerWrapper wrapper = new ServerWrapper(DynamicConfigLoader.load("broker.properties"));
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             wrapper.destroy();

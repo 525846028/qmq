@@ -20,6 +20,7 @@ import qunar.tc.qmq.delay.startup.ServerWrapper;
 
 public class Bootstrap {
     public static void main(String[] args) {
+        System.setProperty("qmq.conf","qmq-dist/conf");
         ServerWrapper wrapper = new ServerWrapper();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             wrapper.destroy();
