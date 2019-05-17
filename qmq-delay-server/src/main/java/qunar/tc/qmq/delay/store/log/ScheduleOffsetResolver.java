@@ -28,6 +28,7 @@ public class ScheduleOffsetResolver {
         LocalDateTime.now();
     }
 
+    //计算 segment 把时间戳修改为 类似 2019 05 18 12 00 这样的格式
     public static long resolveSegment(long offset, int scale) {
         LocalDateTime localDateTime = new LocalDateTime(offset);
         long year = year(localDateTime);
@@ -35,6 +36,7 @@ public class ScheduleOffsetResolver {
         long day = day(localDateTime);
         long hour = hour(localDateTime);
         long minute = minute(localDateTime);
+        //很鸡肋啊  分钟不可能超过60  那么都是自己减自己 都是 0
         minute = minute - (minute % scale);
         return year + month + day + hour + minute;
     }

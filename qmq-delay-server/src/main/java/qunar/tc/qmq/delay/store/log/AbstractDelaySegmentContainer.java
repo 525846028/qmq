@@ -77,6 +77,7 @@ public abstract class AbstractDelaySegmentContainer<T> implements SegmentContain
         long scheduleTime = record.getScheduleTime();
         DelaySegment<T> segment = locateSegment(scheduleTime);
         if (null == segment) {
+            //比如2019-05-18 11点03分 需要延时2小时 即 2019-05-18 13点03分 201905181300这个segment没有 需要创建
             segment = allocNewSegment(scheduleTime);
         }
 

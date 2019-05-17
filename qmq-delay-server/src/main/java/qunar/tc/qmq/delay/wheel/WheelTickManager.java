@@ -83,6 +83,7 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
             timer.start();
             started.set(true);
             recover();
+            //默认 间隔 会执行load方法完成之后一分钟执行
             loadScheduler.scheduleWithFixedDelay(this::load, 0, config.getLoadSegmentDelayMinutes(), TimeUnit.MINUTES);
             LOGGER.info("wheel started.");
         }
@@ -113,6 +114,7 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
         }
 
         LongHashSet dispatchedSet = loadDispatchLog(dispatchLogSegment);
+        //                                                                                    加入时间轮
         WheelLoadCursor.Cursor loadCursor = facade.loadUnDispatch(setSegment, dispatchedSet, this::refresh);
         long baseOffset = loadCursor.getBaseOffset();
         loadingCursor.shiftCursor(baseOffset, loadCursor.getOffset());
@@ -139,6 +141,7 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
     }
 
     private void load() {
+        //                                       默认30分钟
         long next = System.currentTimeMillis() + config.getLoadInAdvanceTimesInMillis();
         long prepareLoadBaseOffset = resolveSegment(next, segmentScale);
         try {
@@ -218,9 +221,11 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
         return startIndex;
     }
 
+    //加载segment
     private void loadSegment(ScheduleSetSegment segment) {
         final long start = System.currentTimeMillis();
         try {
+            //baseOffset 类似这样的 201905181200
             long baseOffset = segment.getSegmentBaseOffset();
             long offset = segment.getWrotePosition();
             if (!loadingCursor.shiftCursor(baseOffset, offset)) {
@@ -245,8 +250,10 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
                 while (currentOffset < offset) {
                     Optional<ScheduleIndex> recordOptional = visitor.nextRecord();
                     if (!recordOptional.isPresent()) break;
+                    //消息索引(索引包括消息在schedule log中的offset和size)
                     ScheduleIndex index = recordOptional.get();
                     currentOffset = index.getOffset() + index.getSize();
+                    //加入时间轮
                     refresh(index);
                     loadedCursor.shiftOffset(currentOffset);
                 }
@@ -265,6 +272,7 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
         long scheduleTime = now;
         try {
             scheduleTime = index.getScheduleTime();
+            //添加定时任务
             timer.newTimeout(index, scheduleTime - now, TimeUnit.MILLISECONDS);
         } catch (Throwable e) {
             LOGGER.error("wheel refresh error, scheduleTime:{}, delay:{}", scheduleTime, scheduleTime - now);
@@ -283,6 +291,7 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
         }
     }
 
+    //加入时间轮
     public void addWHeel(ScheduleIndex index) {
         refresh(index);
     }

@@ -104,6 +104,9 @@ public class ServerWrapper implements Disposable {
         metaInfoService.setMetaServer(config.getString(META_SERVER_ENDPOINT));
         metaInfoService.init();
         BrokerService brokerService = new BrokerServiceImpl(metaInfoService);
+
+
+        //标记轮操作类
         this.wheelTickManager = new WheelTickManager(storeConfig, brokerService, facade, sender);
 
         this.receiver = new Receiver(config, facade);
@@ -111,6 +114,7 @@ public class ServerWrapper implements Disposable {
         final MetaServerLocator metaServerLocator = new MetaServerLocator(config.getString(META_SERVER_ENDPOINT));
         this.brokerRegisterService = new BrokerRegisterService(listenPort, metaServerLocator);
 
+        //用来接收延迟消息进行处理逻辑
         this.processor = new ReceivedDelayMessageProcessor(receiver);
     }
 
@@ -118,6 +122,7 @@ public class ServerWrapper implements Disposable {
         long scheduleTime = index.getScheduleTime();
         long offset = index.getOffset();
         if (wheelTickManager.canAdd(scheduleTime, offset)) {
+            //加入时间轮
             wheelTickManager.addWHeel(index);
             return true;
         }

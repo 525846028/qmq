@@ -49,6 +49,7 @@ public class MessageIterateEventListener implements EventListener<LogRecord> {
             throw new AppendException("appendScheduleLogError");
         }
 
+        //加入时间轮
         iterateCallback.apply(result.getAdditional());
     }
 }

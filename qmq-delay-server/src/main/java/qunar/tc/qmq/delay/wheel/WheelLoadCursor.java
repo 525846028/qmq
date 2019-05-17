@@ -49,6 +49,7 @@ public class WheelLoadCursor {
         return false;
     }
 
+    //改变cursor
     boolean shiftCursor(long cursor) {
         if (cursor >= baseOffset) {
             synchronized (cursorLock) {

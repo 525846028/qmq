@@ -69,6 +69,7 @@ public abstract class AbstractDelaySegment<T> implements DelaySegment<T> {
 
     @Override
     public AppendMessageResult<T> append(LogRecord log, LogAppender<T, LogRecord> appender) {
+        //存储相应内容到相应的延迟文件中 1小时一个文件形式
         appender.lockAppender();
         try {
             long currentPos = wrotePosition.get();

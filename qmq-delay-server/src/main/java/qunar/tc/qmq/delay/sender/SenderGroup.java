@@ -84,6 +84,7 @@ public class SenderGroup implements Disposable {
             List<ScheduleSetRecord> records = store.recoverLogRecord(list);
             QMon.loadMsgTime(System.currentTimeMillis() - start);
 
+            //发送逻辑
             Datagram response = sendMessages(records, sender);
             release(records);
             monitor(list, groupName);

@@ -90,6 +90,7 @@ public class MessageLogReplayer implements Switchable {
         }
     }
 
+    //延迟 dispatcher中心，进行分发
     private class Dispatcher implements Runnable {
         private final AtomicLong cursor;
 
