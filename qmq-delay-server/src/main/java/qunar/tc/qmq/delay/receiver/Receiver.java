@@ -77,6 +77,7 @@ public class Receiver {
             final ReceivedDelayMessage receivedDelayMessage = new ReceivedDelayMessage(message, cmd.getReceiveTime());
             futures.add(receivedDelayMessage.getPromise());
             try {
+                //过滤器链
                 invoker.invoke(receivedDelayMessage);
             } catch (OverDelayException e) {
                 overDelay(receivedDelayMessage);
@@ -107,6 +108,7 @@ public class Receiver {
         }
 
         try {
+            //添加消息
             ReceivedResult result = facade.appendMessageLog(message);
             offer(message, result);
         } catch (Throwable t) {

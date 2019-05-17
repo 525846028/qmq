@@ -126,6 +126,8 @@ public class NettyClient extends AbstractNettyClient {
         }
     }
 
+    //前面brokerAddr已经区分是 延时的 还是普通消息了 地址了 延时的走 delay服务  正常走实时broker
+    //CommandCode.SEND_MESSAGE
     public void sendAsync(String brokerAddr, Datagram request, long responseTimeout, ResponseFuture.Callback callback) throws ClientSendException {
         final Channel channel = getOrCreateChannel(brokerAddr);
         final ResponseFuture responseFuture = clientHandler.newResponse(channel, responseTimeout, callback);

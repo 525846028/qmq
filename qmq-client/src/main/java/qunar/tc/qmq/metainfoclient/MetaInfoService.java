@@ -109,6 +109,7 @@ public class MetaInfoService implements MetaInfoClient.ResponseSubscriber, Runna
     private void request(MetaInfoRequestParam param) {
         MetaInfoRequest request = new MetaInfoRequest();
         request.setSubject(param.subject);
+        //类型区分的 延时 普通
         request.setClientType(param.clientType);
         request.setClientId(this.clientId);
         request.setConsumerGroup(param.group);

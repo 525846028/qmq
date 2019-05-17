@@ -42,12 +42,15 @@ class NettyRouter implements Router {
 
     @Override
     public Connection route(Message message) {
+        //判断是否是延迟消息
         ClientType clientType = DelayUtil.isDelayMessage(message) ? ClientType.DELAY_PRODUCER : ClientType.PRODUCER;
         String key = clientType.getCode() + "|" + message.getSubject();
         NettyConnection connection = cached.get(key);
         if (connection != null) return connection;
 
+        //获取相应的连接  如果是延迟消息就发到delay服务中  否则发送到server实时消息服务
         connection = new NettyConnection(message.getSubject(), clientType, producerClient, brokerService);
+        //缓存连接
         NettyConnection old = cached.putIfAbsent(key, connection);
         if (old == null) {
             connection.init();

@@ -156,6 +156,7 @@ public class ServerWrapper implements Disposable {
 
     private void startNettyServer() {
         this.nettyServer = new NettyServer("delay-broker", Runtime.getRuntime().availableProcessors(), listenPort, new DefaultConnectionEventHandler("delay-broker"));
+        //延迟消息处理逻辑
         this.nettyServer.registerProcessor(CommandCode.SEND_MESSAGE, processor, receiveMessageExecutorService);
         this.nettyServer.start();
     }

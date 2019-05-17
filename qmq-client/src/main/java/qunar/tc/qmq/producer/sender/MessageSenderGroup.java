@@ -46,6 +46,7 @@ class MessageSenderGroup {
     public void send() {
         Map<String, MessageException> map;
         try {
+            //发送
             map = connection.send(source);
         } catch (Exception e) {
             for (ProduceMessage pm : source) {

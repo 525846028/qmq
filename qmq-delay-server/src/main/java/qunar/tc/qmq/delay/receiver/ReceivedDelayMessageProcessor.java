@@ -51,6 +51,7 @@ public class ReceivedDelayMessageProcessor implements NettyRequestProcessor {
     @Override
     public CompletableFuture<Datagram> processRequest(ChannelHandlerContext ctx, RemotingCommand request) {
         final List<RawMessageExtend> messages = deserializeRawMessagesExtend(request);
+        //接收消息
         final ListenableFuture<Datagram> result = receiver.receive(messages, request);
         final CompletableFuture<Datagram> future = new CompletableFuture<>();
         Futures.addCallback(result, new FutureCallback<Datagram>() {

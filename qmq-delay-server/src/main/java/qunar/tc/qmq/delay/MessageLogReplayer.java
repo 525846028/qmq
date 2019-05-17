@@ -34,6 +34,8 @@ import java.util.function.Function;
 /**
  * @author xufeng.deng dennisdxf@gmail.com
  * @since 2018-07-19 17:43
+ *
+ * 消息回放
  */
 public class MessageLogReplayer implements Switchable {
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageLogReplayer.class);
@@ -63,6 +65,7 @@ public class MessageLogReplayer implements Switchable {
     @Override
     public void start() {
         stop = false;
+        //延迟的重新分配
         dispatcherThread.start();
     }
 

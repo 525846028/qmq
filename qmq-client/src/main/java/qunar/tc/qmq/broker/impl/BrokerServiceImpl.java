@@ -142,6 +142,7 @@ public class BrokerServiceImpl implements BrokerService {
         ClusterFuture future = clusterMap.get(key);
         MetaInfoService.MetaInfoRequestParam requestParam = MetaInfoService.buildRequestParam(clientType, subject, group, appCode);
         if (future == null) {
+            //没有建立  下次走缓存走
             future = request(requestParam, false);
         } else {
             metaInfoService.tryAddRequest(requestParam);
