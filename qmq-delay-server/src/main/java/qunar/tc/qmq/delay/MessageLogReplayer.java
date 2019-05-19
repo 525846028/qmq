@@ -133,12 +133,15 @@ public class MessageLogReplayer implements Switchable {
             adjustOffset(visitor);
 
             while (true) {
+                //构造optional对象避免null相关问题，获取之前设置的内容：
+                // qunar.tc.qmq.delay.store.log.MessageSegmentContainer.DelayRawMessageAppender.doAppend具体设置的内容
                 final Optional<LogRecord> recordOptional = visitor.nextRecord();
                 if (recordOptional.isPresent() && recordOptional.get() == DelayMessageLogVisitor.EMPTY_LOG_RECORD) {
                     break;
                 }
 
                 recordOptional.ifPresent((record) -> {
+                    //如果数据record存在，就进行下一步处理 主要就是把消息索引存储到时间轮
                     dispatcher.post(record);
                     long checkpoint = record.getStartWroteOffset() + record.getRecordSize();
                     this.cursor.addAndGet(record.getRecordSize());

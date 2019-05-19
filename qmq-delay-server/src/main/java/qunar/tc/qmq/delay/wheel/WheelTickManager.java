@@ -311,8 +311,12 @@ public class WheelTickManager implements Switchable, HashedWheelTimer.Processor 
     }
 
     @Override
+    /**
+     * 存在时间轮里的数据，时间到时候，需要进行的下一步处理，把消息执行发送到server实时消息服务
+     */
     public void process(ScheduleIndex index) {
         QMon.scheduleDispatch();
+        //发送到broker实时消息服务
         sender.send(index);
     }
 }

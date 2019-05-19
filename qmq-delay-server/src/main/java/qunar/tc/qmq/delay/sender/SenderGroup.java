@@ -74,6 +74,7 @@ public class SenderGroup implements Disposable {
         List<List<ScheduleIndex>> partitions = Lists.partition(batch, MAX_SEND_BATCH_SIZE);
 
         for (List<ScheduleIndex> partition : partitions) {
+            //发送内容
             send(sender, handler, groupInfo, groupName, partition);
         }
     }

@@ -29,6 +29,7 @@ public class ScheduleIndex {
     private final int size;
     private final long sequence;
 
+    //时间轮后续需要对象
     public ScheduleIndex(String subject, long scheduleTime, long offset, int size, long sequence) {
         this.subject = INTERNER.intern(subject);
         this.scheduleTime = scheduleTime;

@@ -62,6 +62,7 @@ class SenderExecutor implements Disposable {
     }
 
     private void doExecute(final SenderGroup group, final List<ScheduleIndex> list, final SenderGroup.ResultHandler handler) {
+        //发送逻辑
         group.send(list, sender, handler);
     }
 

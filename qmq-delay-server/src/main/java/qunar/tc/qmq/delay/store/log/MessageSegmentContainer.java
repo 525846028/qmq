@@ -289,6 +289,9 @@ public class MessageSegmentContainer implements SegmentContainer<AppendMessageRe
         private final ByteBuffer workingBuffer = ByteBuffer.allocate(1024);
 
         @Override
+        /**
+         * delay消息核心存储逻辑
+         */
         public AppendMessageResult<Long> doAppend(long baseOffset, ByteBuffer targetBuffer, int freeSpace, RawMessageExtend message) {
             lock.lock();
             try {
@@ -305,6 +308,7 @@ public class MessageSegmentContainer implements SegmentContainer<AppendMessageRe
                 if (recordSize > config.getSingleMessageLimitSize()) {
                     return new AppendMessageResult<>(AppendMessageStatus.MESSAGE_SIZE_EXCEEDED, startWroteOffset, freeSpace, null);
                 }
+                //剩余空间存储不下，设置空记录
                 if (recordSize != freeSpace && recordSize + MIN_RECORD_BYTES > freeSpace) {
                     workingBuffer.limit(MIN_RECORD_BYTES);
                     workingBuffer.putInt(MESSAGE_LOG_MAGIC_V1);
@@ -317,6 +321,7 @@ public class MessageSegmentContainer implements SegmentContainer<AppendMessageRe
                     }
                     return new AppendMessageResult<>(AppendMessageStatus.END_OF_FILE, startWroteOffset, freeSpace, null);
                 } else {
+                    //正常进行存储数据内容
                     int headerSize = recordSize - message.getBodySize();
                     workingBuffer.limit(headerSize);
                     workingBuffer.putInt(MESSAGE_LOG_MAGIC_V2);
@@ -331,6 +336,7 @@ public class MessageSegmentContainer implements SegmentContainer<AppendMessageRe
                     workingBuffer.putLong(message.getHeader().getBodyCrc());
                     workingBuffer.putInt(message.getBodySize());
                     targetBuffer.put(workingBuffer.array(), 0, headerSize);
+                    //设置消息体内容
                     targetBuffer.put(message.getBody().nioBuffer());
 
                     final long payloadOffset = startWroteOffset + headerSize;

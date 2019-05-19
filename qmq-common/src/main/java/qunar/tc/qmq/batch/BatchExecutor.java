@@ -87,6 +87,7 @@ public class BatchExecutor<Item> implements Runnable {
             List<Item> list = Lists.newArrayListWithCapacity(batchSize);
             int size = this.queue.drainTo(list, batchSize);
             if (size > 0) {
+                //进行真实处理，发送实时消息服务
                 this.processor.process(list);
             }
         }

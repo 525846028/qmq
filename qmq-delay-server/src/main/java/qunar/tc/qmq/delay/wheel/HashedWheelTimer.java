@@ -179,6 +179,7 @@ public class HashedWheelTimer {
     }
 
     private void expire(ScheduleIndex index) {
+        //时间到了之后需要处理的内容
         processor.process(index);
     }
 

@@ -50,6 +50,7 @@ public class MessageIterateEventListener implements EventListener<LogRecord> {
         }
 
         //加入时间轮
+        //iterateCallback===> qunar.tc.qmq.delay.startup.ServerWrapper.iterateCallback
         iterateCallback.apply(result.getAdditional());
     }
 }

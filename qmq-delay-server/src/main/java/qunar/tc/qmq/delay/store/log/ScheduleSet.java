@@ -35,6 +35,7 @@ public class ScheduleSet extends AbstractDelayLog<ScheduleSetSequence> {
     }
 
     ScheduleSetRecord recoverRecord(ScheduleIndex index) {
+        //从时间轮里的消息索引获取完整消息内容
         return ((ScheduleSetSegmentContainer) container).recover(index.getScheduleTime(), index.getSize(), index.getOffset());
     }
 

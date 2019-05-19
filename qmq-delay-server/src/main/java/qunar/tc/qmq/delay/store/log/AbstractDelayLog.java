@@ -40,6 +40,7 @@ public abstract class AbstractDelayLog<T> implements Log<RecordResult<T>, LogRec
     @Override
     public AppendLogResult<RecordResult<T>> append(LogRecord record) {
         String subject = record.getSubject();
+        //存储文件内容
         RecordResult<T> result = container.append(record);
         PutMessageStatus status = result.getStatus();
         if (PutMessageStatus.SUCCESS != status) {
