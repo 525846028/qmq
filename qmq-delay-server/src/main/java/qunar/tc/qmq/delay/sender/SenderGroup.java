@@ -82,6 +82,7 @@ public class SenderGroup implements Disposable {
     private void send(Sender sender, ResultHandler handler, BrokerGroupInfo groupInfo, String groupName, List<ScheduleIndex> list) {
         try {
             long start = System.currentTimeMillis();
+            //根据ScheduleIndex获取完整的消息内容,因为后续需要发送到实时的broker上
             List<ScheduleSetRecord> records = store.recoverLogRecord(list);
             QMon.loadMsgTime(System.currentTimeMillis() - start);
 

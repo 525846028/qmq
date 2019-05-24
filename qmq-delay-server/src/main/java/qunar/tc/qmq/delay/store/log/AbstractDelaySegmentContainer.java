@@ -73,6 +73,9 @@ public abstract class AbstractDelaySegmentContainer<T> implements SegmentContain
 
     @Override
     @SuppressWarnings("unchecked")
+    /**
+     * 延迟消息内容存文件核心逻辑
+     */
     public RecordResult<T> append(LogRecord record) {
         long scheduleTime = record.getScheduleTime();
         DelaySegment<T> segment = locateSegment(scheduleTime);

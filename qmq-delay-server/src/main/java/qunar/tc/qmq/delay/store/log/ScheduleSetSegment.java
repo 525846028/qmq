@@ -46,6 +46,7 @@ public class ScheduleSetSegment extends AbstractDelaySegment<ScheduleSetSequence
         return fileChannel.size();
     }
 
+    //根据offset和size获取消息完整内容
     ScheduleSetRecord recover(long offset, int size) {
         // 交给gc，不能给每个segment分配一个局部buffer
         ByteBuffer result = ByteBuffer.allocateDirect(size);
